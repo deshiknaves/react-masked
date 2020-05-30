@@ -1,26 +1,23 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { MaskedInput } from './components/MaskedInput/index'
+import { Input } from './components/Input/index'
+
+import './App.css'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <main className="app">
+      <MaskedInput
+        autoCharacters={['-']}
+        mask={/^\w{2}-\d{3}$/}
+        validExample="AA-000"
+        placeholder="AA-DDD"
+        placeholderColor="#c1c1c1"
+      >
+        {maskedProps => <Input {...maskedProps} />}
+      </MaskedInput>
+    </main>
+  )
 }
 
-export default App;
+export default App
