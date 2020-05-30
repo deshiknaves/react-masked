@@ -46,6 +46,35 @@ describe('Match', () => {
       expect(match).toBeFalsy()
       expect(value).toBe('0000')
     })
+
+    it('should autofill characters if it is not in reverse mode', () => {
+      const [match, value] = matchedValue(
+        createOptions({
+          autoCharacters: ['/'],
+          mask: /^\d\/\d{2}$/,
+          value: '0',
+          validExample: '0/00',
+        }),
+      )
+
+      expect(match).toBeTruthy()
+      expect(value).toBe('0/')
+    })
+
+    it('should not autofill characters if it is in reverse mode', () => {
+      const [match, value] = matchedValue(
+        createOptions({
+          autoCharacters: ['/'],
+          reverse: true,
+          mask: /^\d\/\d{2}$/,
+          value: '0',
+          validExample: '0/00',
+        }),
+      )
+
+      expect(match).toBeTruthy()
+      expect(value).toBe('0')
+    })
   })
 
   describe(autoFillCharacters.name, () => {
