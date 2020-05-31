@@ -100,4 +100,22 @@ describe(MaskedInput.name, () => {
     expect(mockOnChange).toHaveBeenCalledWith('12', true)
     expect(mockOnChange).toHaveBeenCalledTimes(2)
   })
+
+  it('should be able to pass a custom matcher', () => {
+    const mockOnMatch = jest.fn(() => [false, false])
+    const mask = /^\d/
+    const validExample = '0'
+    renderComponent({ onMatch: mockOnMatch, mask, validExample })
+
+    const input = screen.getByTestId('input')
+
+    user.type(input, '1')
+
+    expect(mockOnMatch).toHaveBeenCalledWith({
+      value: '1',
+      mask,
+      remaining: '',
+      validExample,
+    })
+  })
 })

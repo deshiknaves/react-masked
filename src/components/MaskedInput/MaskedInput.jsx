@@ -15,6 +15,7 @@ export const MaskedInput = memo(
     placeholderColor,
     validExample,
     onChange,
+    onMatch,
   }) => {
     const [style, setStyle] = useState({})
     const [value, setValue] = useState('')
@@ -43,7 +44,8 @@ export const MaskedInput = memo(
     const handleOnChange = evt => {
       let value = evt.target.value
       const remaining = validExample.substring(value.length)
-      const [matched, complete] = matchedValue({
+      const matcher = onMatch || matchedValue
+      const [matched, complete] = matcher({
         value,
         mask,
         remaining,
@@ -107,4 +109,5 @@ MaskedInput.propTypes = {
   placeholderColor: T.string,
   validExample: T.string.isRequired,
   onChange: T.func,
+  onMatch: T.func,
 }
