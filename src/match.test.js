@@ -3,7 +3,7 @@ import { matchedValue, autoFillCharacters } from './match'
 describe('Match', () => {
   describe(matchedValue.name, () => {
     it("should not match if value doesn't match", () => {
-      const { matched } = matchedValue({
+      const [matched] = matchedValue({
         mask: /^\d{2}$/,
         value: 'AB',
         remaining: '',
@@ -13,7 +13,7 @@ describe('Match', () => {
     })
 
     it('should be able to partially match a string', () => {
-      const { matched } = matchedValue({
+      const [matched] = matchedValue({
         mask: /^\d{2}$/,
         value: '0',
         remaining: '0',
@@ -23,7 +23,7 @@ describe('Match', () => {
     })
 
     it('should not match if value exceeds the regex', () => {
-      const { matched } = matchedValue({
+      const [matched] = matchedValue({
         mask: /^\d{2}$/,
         value: '0000',
         remaining: '',

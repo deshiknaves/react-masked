@@ -43,7 +43,7 @@ export const MaskedInput = memo(
     const handleOnChange = evt => {
       let value = evt.target.value
       const remaining = validExample.substring(value.length)
-      const { matched, complete } = matchedValue({
+      const [matched, complete] = matchedValue({
         value,
         mask,
         remaining,

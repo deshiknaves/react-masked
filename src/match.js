@@ -2,7 +2,7 @@ export const matchedValue = ({ mask, value, remaining }) => {
   const matched = mask.test(`${value}${remaining}`)
   const complete = mask.test(value)
 
-  return { matched, complete }
+  return [matched, complete]
 }
 
 export const autoFillCharacters = ({ autoCharacters, remaining }) => {
