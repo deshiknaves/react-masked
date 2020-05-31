@@ -14,6 +14,7 @@ export const MaskedInput = memo(
     placeholder,
     placeholderColor,
     validExample,
+    onChange,
   }) => {
     const [style, setStyle] = useState({})
     const [value, setValue] = useState('')
@@ -51,6 +52,7 @@ export const MaskedInput = memo(
       setValue(value)
       setPlaceholder(placeholder.substring(value.length))
       reverse = false
+      onChange(value, complete)
     }
 
     const onKeyDown = evt => {
@@ -68,7 +70,7 @@ export const MaskedInput = memo(
         </div>
         {children({
           onKeyDown,
-          onChange,
+          onChange: handleOnChange,
           value,
           ref: inputRef,
           style,
@@ -83,6 +85,7 @@ MaskedInput.displayName = 'MaskedInput'
 MaskedInput.defaultProps = {
   autoCharacters: [],
   placeholderColor: '#c1c1c1',
+  onChange: () => {},
 }
 
 MaskedInput.propTypes = {
@@ -92,4 +95,5 @@ MaskedInput.propTypes = {
   placeholder: T.string.isRequired,
   placeholderColor: T.string,
   validExample: T.string.isRequired,
+  onChange: T.func,
 }

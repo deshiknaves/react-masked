@@ -5,6 +5,7 @@ import { MaskedInput } from './MaskedInput'
 import { Input } from '../Input'
 
 describe(MaskedInput.name, () => {
+  const mockOnChange = jest.fn()
   const renderComponent = (props = {}) =>
     render(
       <MaskedInput
@@ -13,6 +14,7 @@ describe(MaskedInput.name, () => {
         validExample="AA-000"
         placeholder="AA-DDD"
         placeholderColor="#c1c1c1"
+        onChange={mockOnChange}
         {...props}
       >
         {({ style, ...maskedProps }) => (
@@ -24,6 +26,10 @@ describe(MaskedInput.name, () => {
         )}
       </MaskedInput>,
     )
+
+  beforeEach(() => {
+    mockOnChange.mockReset()
+  })
 
   it('should be able to copy styles from the passed in component', () => {
     renderComponent()
@@ -50,7 +56,7 @@ describe(MaskedInput.name, () => {
   })
 
   it('should not be able to type characters that do not match the mask', () => {
-    renderComponent({ mask: /^\d{2}$/, placeholder: 'DD' })
+    renderComponent({ mask: /^\d{2}$/, placeholder: 'DD', validExample: '00' })
 
     const placeholder = screen.getByRole('presentation')
     const input = screen.getByTestId('input')
@@ -80,5 +86,18 @@ describe(MaskedInput.name, () => {
     fireEvent.keyDown(input, { keyCode: 8 })
     fireEvent.change(input, { target: { value: '00' } })
     expect(placeholder.childNodes[0].textContent).toMatchInlineSnapshot(`"00"`)
+  })
+
+  fit('should notify that the input is complete when it matches the mask', () => {
+    renderComponent({ mask: /^\d{2}$/, placeholder: 'DD', validExample: '00' })
+
+    const input = screen.getByTestId('input')
+
+    user.type(input, '1')
+    user.type(input, '2')
+
+    expect(mockOnChange).toHaveBeenCalledWith('1', false)
+    expect(mockOnChange).toHaveBeenCalledWith('12', true)
+    expect(mockOnChange).toHaveBeenCalledTimes(2)
   })
 })
