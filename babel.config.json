@@ -1,3 +1,10 @@
 {
-  "extends": "@snowpack/app-scripts-react/babel.config.json"
+  "extends": "@snowpack/app-scripts-react/babel.config.json",
+  "env": {
+    "test": {
+      "presets": [
+        "@babel/preset-env"
+      ]
+    }
+  }
 }
