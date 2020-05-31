@@ -60,7 +60,7 @@ export const MaskedInput = memo(
 
     return (
       <div style={{ position: 'relative' }}>
-        <div ref={placeholderRef}>
+        <div ref={placeholderRef} role="presentation">
           {value}
           <span style={{ color: placeholderColor }}>
             {remainingPlaceholder}
