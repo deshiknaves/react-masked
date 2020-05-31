@@ -39,8 +39,8 @@ export const MaskedInput = memo(
       setStyle({ background: 'transparent', position: 'relative', zIndex: 1 })
     }, [])
 
-    const onChange = evt => {
-      const [matched, value] = matchedValue({
+    const handleOnChange = evt => {
+      const { matched, value, complete } = matchedValue({
         autoCharacters,
         value: evt.target.value,
         mask,

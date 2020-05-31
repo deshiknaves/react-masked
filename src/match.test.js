@@ -9,7 +9,7 @@ describe('Match', () => {
     })
 
     it("should not match if value doesn't match", () => {
-      const [match, value] = matchedValue(
+      const { matched, value } = matchedValue(
         createOptions({
           mask: /^\d{2}$/,
           value: 'AB',
@@ -17,12 +17,12 @@ describe('Match', () => {
         }),
       )
 
-      expect(match).toBeFalsy()
+      expect(matched).toBeFalsy()
       expect(value).toBe('AB')
     })
 
     it('should be able to partially match a string', () => {
-      const [match, value] = matchedValue(
+      const { matched, value } = matchedValue(
         createOptions({
           mask: /^\d{2}$/,
           value: '0',
@@ -30,12 +30,12 @@ describe('Match', () => {
         }),
       )
 
-      expect(match).toBeTruthy()
+      expect(matched).toBeTruthy()
       expect(value).toBe('0')
     })
 
     it('should not match if value exceeds the regex', () => {
-      const [match, value] = matchedValue(
+      const { match, value } = matchedValue(
         createOptions({
           mask: /^\d{2}$/,
           value: '0000',
@@ -48,7 +48,7 @@ describe('Match', () => {
     })
 
     it('should autofill characters if it is not in reverse mode', () => {
-      const [match, value] = matchedValue(
+      const { matched, value } = matchedValue(
         createOptions({
           autoCharacters: ['/'],
           mask: /^\d\/\d{2}$/,
@@ -57,12 +57,12 @@ describe('Match', () => {
         }),
       )
 
-      expect(match).toBeTruthy()
+      expect(matched).toBeTruthy()
       expect(value).toBe('0/')
     })
 
     it('should not autofill characters if it is in reverse mode', () => {
-      const [match, value] = matchedValue(
+      const { matched, value } = matchedValue(
         createOptions({
           autoCharacters: ['/'],
           reverse: true,
@@ -72,7 +72,7 @@ describe('Match', () => {
         }),
       )
 
-      expect(match).toBeTruthy()
+      expect(matched).toBeTruthy()
       expect(value).toBe('0')
     })
   })

@@ -7,14 +7,15 @@ export const matchedValue = ({
 }) => {
   const remaining = validExample.substring(value.length)
   const matched = mask.test(`${value}${remaining}`)
+  const complete = mask.test(value)
   let added = ''
 
   if (matched && !reverse) {
-    // Get next character
+    // Get next character(s)
     added = autoFillCharacters({ autoCharacters, remaining })
   }
 
-  return [matched, `${value}${added}`]
+  return { matched, value: `${value}${added}`, complete }
 }
 
 export const autoFillCharacters = ({ autoCharacters, remaining }) => {
