@@ -88,7 +88,7 @@ describe(MaskedInput.name, () => {
     expect(placeholder.childNodes[0].textContent).toMatchInlineSnapshot(`"00"`)
   })
 
-  fit('should notify that the input is complete when it matches the mask', () => {
+  it('should notify that the input is complete when it matches the mask', () => {
     renderComponent({ mask: /^\d{2}$/, placeholder: 'DD', validExample: '00' })
 
     const input = screen.getByTestId('input')

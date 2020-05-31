@@ -2,78 +2,34 @@ import { matchedValue, autoFillCharacters } from './match'
 
 describe('Match', () => {
   describe(matchedValue.name, () => {
-    const createOptions = (options = {}) => ({
-      autoCharacters: [],
-      reverse: false,
-      ...options,
-    })
-
     it("should not match if value doesn't match", () => {
-      const { matched, value } = matchedValue(
-        createOptions({
-          mask: /^\d{2}$/,
-          value: 'AB',
-          validExample: '00',
-        }),
-      )
+      const { matched } = matchedValue({
+        mask: /^\d{2}$/,
+        value: 'AB',
+        remaining: '',
+      })
 
       expect(matched).toBeFalsy()
-      expect(value).toBe('AB')
     })
 
     it('should be able to partially match a string', () => {
-      const { matched, value } = matchedValue(
-        createOptions({
-          mask: /^\d{2}$/,
-          value: '0',
-          validExample: '00',
-        }),
-      )
+      const { matched } = matchedValue({
+        mask: /^\d{2}$/,
+        value: '0',
+        remaining: '0',
+      })
 
       expect(matched).toBeTruthy()
-      expect(value).toBe('0')
     })
 
     it('should not match if value exceeds the regex', () => {
-      const { match, value } = matchedValue(
-        createOptions({
-          mask: /^\d{2}$/,
-          value: '0000',
-          validExample: '00',
-        }),
-      )
+      const { matched } = matchedValue({
+        mask: /^\d{2}$/,
+        value: '0000',
+        remaining: '',
+      })
 
-      expect(match).toBeFalsy()
-      expect(value).toBe('0000')
-    })
-
-    it('should autofill characters if it is not in reverse mode', () => {
-      const { matched, value } = matchedValue(
-        createOptions({
-          autoCharacters: ['/'],
-          mask: /^\d\/\d{2}$/,
-          value: '0',
-          validExample: '0/00',
-        }),
-      )
-
-      expect(matched).toBeTruthy()
-      expect(value).toBe('0/')
-    })
-
-    it('should not autofill characters if it is in reverse mode', () => {
-      const { matched, value } = matchedValue(
-        createOptions({
-          autoCharacters: ['/'],
-          reverse: true,
-          mask: /^\d\/\d{2}$/,
-          value: '0',
-          validExample: '0/00',
-        }),
-      )
-
-      expect(matched).toBeTruthy()
-      expect(value).toBe('0')
+      expect(matched).toBeFalsy()
     })
   })
 

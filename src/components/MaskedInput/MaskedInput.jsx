@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, memo } from 'react'
 import T from 'prop-types'
 import './MaskedInput.css'
-import { matchedValue } from '../../match'
+import { matchedValue, autoFillCharacters } from '../../match'
 import { KEYS } from '../../constants'
 
 const excludedStyles = ['color', '-webkit-text-fill-color']
@@ -41,14 +41,25 @@ export const MaskedInput = memo(
     }, [])
 
     const handleOnChange = evt => {
-      const { matched, value, complete } = matchedValue({
-        autoCharacters,
-        value: evt.target.value,
+      let value = evt.target.value
+      const remaining = validExample.substring(value.length)
+      const { matched, complete } = matchedValue({
+        value,
         mask,
+        remaining,
         validExample,
-        reverse,
       })
+
       if (!matched) return
+
+      if (matched && !reverse) {
+        // Get next character(s)
+        value += autoFillCharacters({
+          autoCharacters,
+          remaining,
+        })
+      }
+
       setValue(value)
       setPlaceholder(placeholder.substring(value.length))
       reverse = false
