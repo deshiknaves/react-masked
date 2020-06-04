@@ -3,7 +3,7 @@
   "version": "0.0.1-alpha",
   "main": "dist/react-masked.cjs.js",
   "module": "dist/react-masked.esm.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/types/main.d.ts",
   "description": "Really light and flexible input mask in React",
   "scripts": {
     "start": "snowpack dev",
