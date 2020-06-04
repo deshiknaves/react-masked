@@ -6,6 +6,7 @@ import { Input } from '../Input'
 
 describe(MaskedInput.name, () => {
   const mockOnChange = jest.fn()
+  const mockOnMatch = jest.fn()
   const renderComponent = (props = {}) =>
     render(
       <MaskedInput

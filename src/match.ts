@@ -1,11 +1,25 @@
-export const matchedValue = ({ mask, value, remaining }) => {
+export const matchedValue = ({
+  mask,
+  value,
+  remaining,
+}: {
+  mask: RegExp
+  value: string
+  remaining: string
+}) => {
   const matched = mask.test(`${value}${remaining}`)
   const complete = mask.test(value)
 
   return [matched, complete]
 }
 
-export const autoFillCharacters = ({ autoCharacters, remaining }) => {
+export const autoFillCharacters = ({
+  autoCharacters,
+  remaining,
+}: {
+  autoCharacters: string[]
+  remaining: string
+}) => {
   let added = ''
   let filled = false
   const characters = remaining.split('')
