@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   rootDir: path.join(__dirname, '..'),
   transform: {
-    '^.+\\.(js|jsx)': 'babel-jest',
+    '^.+\\.(js|jsx|ts|tsx)': 'babel-jest',
   },
   moduleDirectories: [
     'node_modules',
