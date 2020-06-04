@@ -2,12 +2,10 @@ import React, {
   useState,
   useEffect,
   useRef,
-  memo,
   MutableRefObject,
   ReactNode,
 } from 'react'
 import T from 'prop-types'
-import './MaskedInput.css'
 import { matchedValue, autoFillCharacters } from '../../match'
 import { KEYS } from '../../constants'
 
