@@ -6,11 +6,11 @@ export const matchedValue = ({
   mask: RegExp
   value: string
   remaining: string
-}) => {
+}): [string | false, boolean] => {
   const matched = mask.test(`${value}${remaining}`)
   const complete = mask.test(value)
 
-  return [matched, complete]
+  return [matched ? value : false, complete]
 }
 
 export const autoFillCharacters = ({
