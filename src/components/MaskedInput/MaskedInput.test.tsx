@@ -136,7 +136,7 @@ describe(MaskedInput.name, () => {
       }
 
       const complete = mask.test(value)
-      return [matched ? value : false, complete, changed]
+      return { matched, value, complete, changed }
     }
     const { rerender } = render(
       <MaskedInput
