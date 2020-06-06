@@ -2,7 +2,7 @@ import React from 'react'
 import { MaskedInput } from './components/MaskedInput/index'
 import { Input } from './components/Input/index'
 
-import './App.css'
+import './Examples.css'
 
 function App() {
   return (
