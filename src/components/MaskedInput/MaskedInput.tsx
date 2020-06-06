@@ -29,8 +29,7 @@ type MaskedInputProps = {
     value: string
     mask: RegExp
     remaining: string
-    validExample: string
-  }): [string, boolean]
+  }): boolean[]
 }
 
 export const MaskedInput = ({
@@ -87,16 +86,15 @@ export const MaskedInput = ({
     // Check if it matches
     const remaining = validExample.substring(current.length)
     const matcher = onMatch || matchedValue
-    const [matched, complete] = matcher({
+    const [matched, complete, changed] = matcher({
       value: current,
       mask,
       remaining,
-      validExample,
     })
 
     if (!matched) return
 
-    if (matched && !reverse) {
+    if (matched && !reverse && !changed) {
       // Get next character(s)
       current += autoFillCharacters({
         autoCharacters,

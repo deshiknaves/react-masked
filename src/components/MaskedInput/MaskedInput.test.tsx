@@ -6,7 +6,6 @@ import { Input } from '../Input'
 
 describe(MaskedInput.name, () => {
   const mockOnChange = jest.fn()
-  const mockOnMatch = jest.fn()
   const renderComponent = (props = {}) =>
     render(
       <MaskedInput
@@ -119,21 +118,74 @@ describe(MaskedInput.name, () => {
     expect(mockOnChange).toHaveBeenCalledTimes(2)
   })
 
-  it('should be able to pass a custom matcher', () => {
-    const mockOnMatch = jest.fn(() => [false, false])
-    const mask = /^\d/
-    const validExample = '0'
-    renderComponent({ onMatch: mockOnMatch, mask, validExample })
-
-    const input = screen.getByTestId('input')
-
-    user.type(input, '1')
-
-    expect(mockOnMatch).toHaveBeenCalledWith({
-      value: '1',
+  it('should be able to use a custom matcher to change the placeholder and valid example', () => {
+    const customMatcher = ({
+      value,
       mask,
-      remaining: '',
-      validExample,
-    })
+      remaining,
+    }: {
+      mask: RegExp
+      value: string
+      remaining: string
+    }) => {
+      let changed = false
+      const matched = mask.test(`${value}${remaining}`)
+      if (value.length === 4) {
+        const lastKey = value.substring(value.length - 1)
+        changed = lastKey === 'A'
+      }
+
+      const complete = mask.test(value)
+      return [matched, complete, changed]
+    }
+    const { rerender } = render(
+      <MaskedInput
+        autoCharacters={['-']}
+        mask={/^\w{2}-(A|B)-\d{3}$/}
+        validExample="AA-A-000"
+        placeholder="AA-DDD"
+        onChange={mockOnChange}
+        onMatch={customMatcher}
+      >
+        {({ style, ...maskedProps }) => (
+          <Input
+            style={{ ...style, border: '1px solid red' }}
+            {...maskedProps}
+            data-testid="input"
+          />
+        )}
+      </MaskedInput>,
+    )
+
+    const input = screen.getByTestId('input') as HTMLInputElement
+    user.type(input, 'A')
+    user.type(input, 'A')
+    user.type(input, 'A')
+
+    rerender(
+      <MaskedInput
+        autoCharacters={['-']}
+        mask={/^\w{2}-A\d--\d{3}$/}
+        validExample="AA-A0--000"
+        placeholder="AA-A0--DDD"
+        onChange={mockOnChange}
+      >
+        {({ style, ...maskedProps }) => (
+          <Input
+            style={{ ...style, border: '1px solid red' }}
+            {...maskedProps}
+            data-testid="input"
+          />
+        )}
+      </MaskedInput>,
+    )
+
+    user.type(input, '0')
+
+    const placeholder = screen.getByRole('presentation')
+    expect(input.value).toMatchInlineSnapshot(`"AA-A0--"`)
+    expect(placeholder.childNodes[0].textContent).toMatchInlineSnapshot(
+      `"AA-A0--"`,
+    )
   })
 })
