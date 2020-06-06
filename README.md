@@ -31,9 +31,9 @@ define this, so there is no need to add any bloat to this component.
 The component takes an array of `autoCharacters`. If after inserting a character
 into a field the next character in the `validExamples` is character in this
 array, then it will auto insert it. This will obviously fail for optional
-letters in the middle of the string. For a lot of cases this is not required, so
-to begin with I won't try and solve that. Might be something for later if it's
-needed.
+letters in the middle of the string. For this reason there is an ability to pass
+in a custom matcher function which can be used to handle more complicated cases
+like these.
 
 ## Usage
 
