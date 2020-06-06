@@ -70,11 +70,25 @@ export const MaskedInput = ({
 
   const handleOnChange = (evt: Event) => {
     const target = evt.target as HTMLInputElement
-    let value = target.value
-    const remaining = validExample.substring(value.length)
+    let current = target.value
+    const lastKey = current.substring(current.length - 1)
+    const isAutoFillable = autoCharacters.includes(lastKey)
+
+    // Add any keys that can be auto filled
+    // then add the last key
+    if (!isAutoFillable && !reverse) {
+      const add = autoFillCharacters({
+        autoCharacters,
+        remaining: validExample.substring(value.length),
+      })
+      current = `${value}${add}${lastKey}`
+    }
+
+    // Check if it matches
+    const remaining = validExample.substring(current.length)
     const matcher = onMatch || matchedValue
     const [matched, complete] = matcher({
-      value,
+      value: current,
       mask,
       remaining,
       validExample,
@@ -84,16 +98,16 @@ export const MaskedInput = ({
 
     if (matched && !reverse) {
       // Get next character(s)
-      value += autoFillCharacters({
+      current += autoFillCharacters({
         autoCharacters,
         remaining,
       })
     }
 
-    setValue(value)
-    setPlaceholder(placeholder.substring(value.length))
+    setValue(current)
+    setPlaceholder(placeholder.substring(current.length))
     reverse = false
-    onChange(value, complete)
+    onChange(current, complete)
   }
 
   const onKeyDown = (evt: KeyboardEvent) => {

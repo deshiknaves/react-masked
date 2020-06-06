@@ -89,6 +89,23 @@ describe(MaskedInput.name, () => {
     expect(placeholder.childNodes[0].textContent).toMatchInlineSnapshot(`"00"`)
   })
 
+  it('should add any autofillable characters if the next key is not an autofillable character', () => {
+    renderComponent()
+
+    const placeholder = screen.getByRole('presentation')
+    const input = screen.getByTestId('input')
+
+    user.type(input, 'AA')
+    fireEvent.keyDown(input, { keyCode: 8 })
+    fireEvent.change(input, { target: { value: 'AA' } })
+
+    user.type(input, '0')
+
+    expect(placeholder.childNodes[0].textContent).toMatchInlineSnapshot(
+      `"AA-0"`,
+    )
+  })
+
   it('should notify that the input is complete when it matches the mask', () => {
     renderComponent({ mask: /^\d{2}$/, placeholder: 'DD', validExample: '00' })
 
