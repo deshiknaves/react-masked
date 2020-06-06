@@ -67,6 +67,17 @@ export const MaskedInput = ({
     setStyle({ background: 'transparent', position: 'relative', zIndex: 1 })
   }, [])
 
+  useEffect(() => {
+    // When placeholder and mask have changed, auto add characters
+    let current = value
+    const remaining = validExample.substring(current.length)
+    current += autoFillCharacters({
+      autoCharacters,
+      remaining,
+    })
+    setValue(current)
+  }, [placeholder, mask])
+
   const handleOnChange = (evt: Event) => {
     const target = evt.target as HTMLInputElement
     let current = target.value
