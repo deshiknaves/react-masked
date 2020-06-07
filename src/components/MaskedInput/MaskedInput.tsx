@@ -30,7 +30,7 @@ type MaskedInputProps = {
   placeholderColor: string
   validExample: string
   onChange(value: string, complete: boolean): void
-  onMatch?(object: {
+  onMatch(object: {
     value: string
     mask: RegExp
     remaining: string
@@ -130,14 +130,13 @@ export const MaskedInput = ({
     let current = value
     // Check if it matches
     const remaining = validExample.substring(current.length)
-    const matcher = onMatch || matchedValue
     const {
       matched,
       complete,
       changed,
       value: updateValue,
       remaining: updatedRemaining,
-    } = matcher({
+    } = onMatch({
       value: current,
       mask,
       remaining,
@@ -192,6 +191,7 @@ MaskedInput.defaultProps = {
   placeholder: '',
   placeholderColor: '#c1c1c1',
   onChange: () => {},
+  onMatch: matchedValue,
 }
 
 MaskedInput.propTypes = {
