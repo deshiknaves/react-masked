@@ -4,6 +4,10 @@ import React, {
   useRef,
   MutableRefObject,
   ReactNode,
+  ChangeEvent,
+  ClipboardEvent,
+  KeyboardEvent,
+  FormEvent,
 } from 'react'
 import T from 'prop-types'
 import { matchedValue, autoFillCharacters } from '../../match'
@@ -16,7 +20,7 @@ type MaskedInputProps = {
   children(props: {
     onKeyDown(evt: KeyboardEvent): void
     onPaste(evt: ClipboardEvent): void
-    onChange(evt: Event): void
+    onChange(evt: ChangeEvent<any> | FormEvent<any>): void
     value: string
     ref: MutableRefObject<any>
     style: any
@@ -103,8 +107,8 @@ export const MaskedInput = ({
     }
   }
 
-  const handleOnChange = (evt: Event) => {
-    const target = evt.target as HTMLInputElement
+  const handleOnChange = (evt: ChangeEvent) => {
+    const target = evt.target as HTMLInputElement | HTMLTextAreaElement
     let current = target.value
     const lastKey = current.substring(current.length - 1)
     const isAutoFillable = autoCharacters.includes(lastKey)
