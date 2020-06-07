@@ -29,7 +29,7 @@ type MaskedInputProps = {
     value: string
     mask: RegExp
     remaining: string
-    lastKey?: string
+    lastKey: string
   }): {
     matched: boolean
     complete: boolean
