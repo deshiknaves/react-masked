@@ -189,6 +189,7 @@ MaskedInput.displayName = 'MaskedInput'
 
 MaskedInput.defaultProps = {
   autoCharacters: [],
+  placeholder: '',
   placeholderColor: '#c1c1c1',
   onChange: () => {},
 }
@@ -198,6 +199,7 @@ MaskedInput.propTypes = {
   children: T.func.isRequired,
   mask: T.object.isRequired,
   placeholder: T.string.isRequired,
+  placeholder: T.string,
   placeholderColor: T.string,
   validExample: T.string.isRequired,
   onChange: T.func,
