@@ -15,6 +15,7 @@ type MaskedInputProps = {
   autoCharacters: string[]
   children(props: {
     onKeyDown(evt: KeyboardEvent): void
+    onPaste(evt: ClipboardEvent): void
     onChange(evt: Event): void
     value: string
     ref: MutableRefObject<any>
@@ -86,6 +87,22 @@ export const MaskedInput = ({
     setPlaceholder(placeholder.substring(current.length))
   }, [placeholder, mask])
 
+  const handleOnPaste = (evt: ClipboardEvent) => {
+    evt.preventDefault()
+    const data = evt.clipboardData?.getData('Text')
+    if (!data) return
+    const keys = data.split('')
+    let inserted = true
+    const iterator = keys[Symbol.iterator]()
+    let next = iterator.next()
+    let current = value
+    while (!next.done && inserted) {
+      current += next.value
+      inserted = insertCharacter(current, value)
+      next = iterator.next()
+    }
+  }
+
   const handleOnChange = (evt: Event) => {
     const target = evt.target as HTMLInputElement
     let current = target.value
@@ -102,6 +119,11 @@ export const MaskedInput = ({
       current = `${value}${add}${lastKey}`
     }
 
+    insertCharacter(current, lastKey)
+  }
+
+  const insertCharacter = (value: string, lastKey: string, paste = false) => {
+    let current = value
     // Check if it matches
     const remaining = validExample.substring(current.length)
     const matcher = onMatch || matchedValue
@@ -118,10 +140,10 @@ export const MaskedInput = ({
       lastKey,
     })
 
-    if (!matched) return
+    if (!matched) return false
 
     current = updateValue || current
-    if (matched && !reverse && !changed) {
+    if (matched && !reverse && !changed && !paste) {
       // Get next character(s)
       current += autoFillCharacters({
         autoCharacters,
@@ -133,6 +155,7 @@ export const MaskedInput = ({
     setPlaceholder(placeholder.substring(current.length))
     reverse = false
     onChange(current, complete)
+    return true
   }
 
   const onKeyDown = (evt: KeyboardEvent) => {
@@ -149,6 +172,7 @@ export const MaskedInput = ({
       {children({
         onKeyDown,
         onChange: handleOnChange,
+        onPaste: handleOnPaste,
         value,
         ref: inputRef,
         style,

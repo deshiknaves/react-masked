@@ -188,4 +188,80 @@ describe(MaskedInput.name, () => {
       `"AA-A0--"`,
     )
   })
+
+  it('should be able to paste an entire matching value', () => {
+    renderComponent()
+
+    const input = screen.getByTestId('input') as HTMLInputElement
+    const placeholder = screen.getByRole('presentation')
+
+    const event = new Event('paste', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+    })
+
+    const clipboardEvent = event as ClipboardEvent
+
+    // @ts-ignore
+    clipboardEvent['clipboardData'] = {
+      getData: () => 'AA-000',
+    }
+
+    input.dispatchEvent(clipboardEvent)
+
+    expect(placeholder.childNodes[0].textContent).toMatchInlineSnapshot(
+      `"AA-000"`,
+    )
+  })
+
+  it('should be able to paste all matching characters', () => {
+    renderComponent()
+
+    const input = screen.getByTestId('input') as HTMLInputElement
+    const placeholder = screen.getByRole('presentation')
+
+    const event = new Event('paste', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+    })
+
+    const clipboardEvent = event as ClipboardEvent
+
+    // @ts-ignore
+    clipboardEvent['clipboardData'] = {
+      getData: () => 'AA-A',
+    }
+
+    input.dispatchEvent(clipboardEvent)
+
+    expect(placeholder.childNodes[0].textContent).toMatchInlineSnapshot(`"AA-"`)
+  })
+
+  it('should be able to paste all matching characters with characters already present', () => {
+    renderComponent()
+
+    const input = screen.getByTestId('input') as HTMLInputElement
+    const placeholder = screen.getByRole('presentation')
+
+    user.type(input, '0')
+
+    const event = new Event('paste', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+    })
+
+    const clipboardEvent = event as ClipboardEvent
+
+    // @ts-ignore
+    clipboardEvent['clipboardData'] = {
+      getData: () => 'A-A',
+    }
+
+    input.dispatchEvent(clipboardEvent)
+
+    expect(placeholder.childNodes[0].textContent).toMatchInlineSnapshot(`"0A-"`)
+  })
 })
