@@ -83,6 +83,7 @@ export const MaskedInput = ({
       remaining,
     })
     setValue(current)
+    setPlaceholder(placeholder.substring(current.length))
   }, [placeholder, mask])
 
   const handleOnChange = (evt: Event) => {
