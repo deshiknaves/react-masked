@@ -5,3 +5,13 @@
 .app {
   padding: 36px;
 }
+
+.field {
+  display: flex;
+  align-items: center;
+}
+
+.field svg {
+  margin-left: 0.5rem;
+  vertical-align: top;
+}
