@@ -198,7 +198,6 @@ MaskedInput.propTypes = {
   autoCharacters: T.arrayOf(T.string),
   children: T.func.isRequired,
   mask: T.object.isRequired,
-  placeholder: T.string.isRequired,
   placeholder: T.string,
   placeholderColor: T.string,
   validExample: T.string.isRequired,
