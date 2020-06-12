@@ -20,7 +20,7 @@ type MaskedInputProps = {
   children(props: {
     onKeyDown(evt: KeyboardEvent): void
     onPaste(evt: ClipboardEvent): void
-    onChange(evt: ChangeEvent<any> | FormEvent<any>): void
+    onChange(evt: ChangeEvent<any> | FormEvent<any> | string): void
     value: string
     ref: MutableRefObject<any>
     style: any
@@ -107,9 +107,18 @@ export const MaskedInput = ({
     }
   }
 
-  const handleOnChange = (evt: ChangeEvent) => {
-    const target = evt.target as HTMLInputElement | HTMLTextAreaElement
-    let current = target.value
+  const handleOnChangeEvent = (evt: ChangeEvent | string) => {
+    let current = evt
+    if (typeof evt !== 'string') {
+      const target = evt.target as HTMLInputElement | HTMLTextAreaElement
+      current = target.value
+    }
+
+    handleOnChangeValue(current as string)
+  }
+
+  const handleOnChangeValue = (input: string) => {
+    let current = input
     const lastKey = current.substring(current.length - 1)
     const isAutoFillable = autoCharacters.includes(lastKey)
 
@@ -173,12 +182,12 @@ export const MaskedInput = ({
         <span style={{ color: placeholderColor }}>{remainingPlaceholder}</span>
       </div>
       {children({
-        onKeyDown,
-        onChange: handleOnChange,
-        onPaste: handleOnPaste,
-        value,
         ref: inputRef,
         style,
+        value,
+        onKeyDown,
+        onChange: handleOnChangeEvent,
+        onPaste: handleOnPaste,
       })}
     </div>
   )
