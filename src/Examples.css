@@ -19,3 +19,20 @@ html {
   margin-left: 0.5rem;
   vertical-align: top;
 }
+
+[contenteditable],
+textarea {
+  border: 2px solid #c1c1c1;
+  border-radius: 3px;
+  padding: 8px 10px;
+  transition: border 0.1s linear;
+  min-width: 300px;
+  font-size: 14px;
+  color: #333333;
+  background-color: white;
+}
+
+textarea {
+  width: 40rem;
+  height: 5rem;
+}
