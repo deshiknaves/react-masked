@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { MaskedInput } from './components/MaskedInput/index'
 import { Input } from './components/Input/index'
+import { ContentEditable } from './components/ContentEditable/index'
 import { Check } from './Check'
 
 import './Examples.css'
@@ -19,6 +20,7 @@ const yearFourExample = '01/01/2002'
 
 function App() {
   const [basicComplete, setBasicComplete] = useState(false)
+  const [autoComplete, setAutoComplete] = useState(false)
   const [americanComplete, setAmericanComplete] = useState(false)
   const [britishComplete, setBritishComplete] = useState(false)
   const [britishVariableComplete, setBritishVariableComplete] = useState(false)
@@ -28,13 +30,32 @@ function App() {
     example: yearTwoExample,
     length: 2,
   })
+  const [textarea, setTextarea] = useState(false)
+  const [contentEditable, setContentEditable] = useState(false)
 
   return (
     <main className="app">
-      <h1>ReactMasked Eamples</h1>
+      <h1>ReactMasked Examples</h1>
       <section>
         <h2>Basic</h2>
-        <p>Just a basic regular expressions</p>
+        <p>Just a basic regular expression</p>
+        <div className="field">
+          <MaskedInput
+            mask={/^\d{3}$/}
+            validExample="123"
+            placeholder="DDD"
+            placeholderColor={placeholderColor}
+            onChange={(_, complete) => setBasicComplete(complete)}
+          >
+            {maskedProps => <Input {...maskedProps} />}
+          </MaskedInput>
+          {basicComplete && <Check />}
+        </div>
+      </section>
+
+      <section>
+        <h2>Auto Characters</h2>
+        <p>Just a basic regular expression with auto characters</p>
         <div className="field">
           <MaskedInput
             autoCharacters={['-']}
@@ -42,11 +63,11 @@ function App() {
             validExample="AA-000"
             placeholder="AA-DDD"
             placeholderColor={placeholderColor}
-            onChange={(_, complete) => setBasicComplete(complete)}
+            onChange={(_, complete) => setAutoComplete(complete)}
           >
             {maskedProps => <Input {...maskedProps} />}
           </MaskedInput>
-          {basicComplete && <Check />}
+          {autoComplete && <Check />}
         </div>
       </section>
 
@@ -129,6 +150,44 @@ function App() {
             {maskedProps => <Input {...maskedProps} />}
           </MaskedInput>
           {britishVariableComplete && <Check />}
+        </div>
+      </section>
+
+      <section>
+        <h2>Textarea</h2>
+        <p>Just a basic regular expression with a textarea component</p>
+        <div className="field">
+          <MaskedInput
+            autoCharacters={['-']}
+            mask={/^[a-zA-Z]{2}-\d{3}$/}
+            validExample="AA-000"
+            placeholder="AA-DDD"
+            placeholderColor={placeholderColor}
+            onChange={(_, complete) => setTextarea(complete)}
+          >
+            {maskedProps => <textarea {...maskedProps} />}
+          </MaskedInput>
+          {textarea && <Check />}
+        </div>
+      </section>
+
+      <section>
+        <h2>ContentEditable</h2>
+        <p>Just a basic regular expression with a ContentEditable component</p>
+        <div className="field">
+          <MaskedInput
+            autoCharacters={['-']}
+            mask={/^[a-zA-Z]{2}-\d{3}$/}
+            validExample="AA-000"
+            placeholder="AA-DDD"
+            placeholderColor={placeholderColor}
+            onChange={(_, complete) => setContentEditable(complete)}
+          >
+            {({ onChange, ...maskedProps }) => (
+              <ContentEditable onChange={onChange} {...maskedProps} />
+            )}
+          </MaskedInput>
+          {contentEditable && <Check />}
         </div>
       </section>
     </main>
